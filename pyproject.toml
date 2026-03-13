@@ -14,7 +14,6 @@ dependencies = [
     "pydantic>=2.0",
     "pyyaml>=6.0",
     "numpy>=1.26",
-    "falkordb>=1.0.0",
     "sentence-transformers>=2.2",
     "fastmcp>=0.1",
 ]

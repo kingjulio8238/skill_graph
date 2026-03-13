@@ -139,7 +139,10 @@ def search_skills(query: str, max_results: int = 5) -> str:
     """Semantic search for skills. Returns descriptions only — use get_skill() to read details."""
     results = _get_search().search(query, max_results=max_results)
     if not results:
-        return "No skills found."
+        nodes = _get_db().get_all_nodes(label=schema.SKILL_LABEL)
+        if not nodes:
+            return "No skills indexed yet. Run index_skills(directory) first to index your markdown files."
+        return "No matching skills found."
 
     lines: list[str] = [f'Results for "{query}":\n']
     for i, r in enumerate(results, 1):
@@ -264,8 +267,9 @@ def list_skills(category: str | None = None) -> str:
         nodes = [n for n in nodes if n.name in cat_skill_names]
 
     if not nodes:
-        msg = f"No skills found in category '{category}'." if category else "No skills indexed."
-        return msg
+        if category:
+            return f"No skills found in category '{category}'."
+        return "No skills indexed yet. Run index_skills(directory) first to index your markdown files."
 
     lines: list[str] = [f"{len(nodes)} skill(s)" + (f" in '{category}'" if category else "") + ":\n"]
     for node in sorted(nodes, key=lambda n: n.name):

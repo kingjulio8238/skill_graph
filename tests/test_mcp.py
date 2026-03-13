@@ -158,7 +158,7 @@ class TestSearchSkills:
 
     def test_no_results_on_empty_db(self, configured_server):
         result = search_skills("anything")
-        assert result == "No skills found."
+        assert "No skills indexed yet" in result
 
     def test_search_returns_descriptions_only(self, configured_server, mock_embedder):
         """Search results should include descriptions but NOT full body content."""
@@ -310,7 +310,7 @@ class TestListSkills:
 
     def test_empty_db(self, configured_server):
         result = list_skills()
-        assert "No skills indexed." in result
+        assert "No skills indexed yet" in result
 
     def test_empty_category(self, configured_server, mock_embedder):
         _seed_skills(configured_server, mock_embedder)
