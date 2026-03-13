@@ -205,7 +205,7 @@ Tested against [arscontexta](https://github.com/agenticnotetaking/arscontexta) â
 | Models | Pydantic v2 |
 | Packaging | hatchling + uv |
 
-No server to run. No Docker. No GPU. The graph lives in a single JSON file at `~/.skill_graph/graph.json`.
+No server to run. No Docker. No GPU. The graph lives in a single JSON file at `~/.skill_graph/graph.db`.
 
 ## First Run
 
