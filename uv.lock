@@ -1711,7 +1711,7 @@ wheels = [
 ]
 
 [[package]]
-name = "skill-graph"
+name = "skill-graph-mcp"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

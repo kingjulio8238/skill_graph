@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "skill-graph"
+name = "skill-graph-mcp"
 version = "0.1.0"
 description = "Knowledge graph + vector search for AI agent skill discovery"
 readme = "README.md"
@@ -39,6 +39,7 @@ Issues = "https://github.com/kingjulio8238/skill_graph/issues"
 
 [project.scripts]
 skill-graph = "skill_graph.cli:cli"
+skill-graph-mcp = "skill_graph.cli:cli"
 
 [project.optional-dependencies]
 dev = [

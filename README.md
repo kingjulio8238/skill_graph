@@ -20,13 +20,13 @@ The graph comes from `[[wikilinks]]` already in your prose. No schema to design,
 ## Install
 
 ```bash
-pip install skill-graph
+pip install skill-graph-mcp
 ```
 
 Or run without installing:
 
 ```bash
-uvx skill-graph --help
+uvx skill-graph-mcp --help
 ```
 
 ## Quick Start
@@ -58,7 +58,7 @@ Add to your Claude Code `.mcp.json`, Cursor config, or any MCP-compatible agent:
   "mcpServers": {
     "skill-graph": {
       "command": "uvx",
-      "args": ["skill-graph", "serve"]
+      "args": ["skill-graph-mcp", "serve"]
     }
   }
 }
