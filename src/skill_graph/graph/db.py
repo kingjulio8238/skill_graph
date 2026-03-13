@@ -50,6 +50,8 @@ class GraphDB:
         self._edges: list[Edge] = []
         self._db_path = Path(self._settings.db_path).expanduser()
         self._loaded = False
+        self._batch_mode = False
+        self._dirty = False
 
     # -- lifecycle --------------------------------------------------------
 
@@ -106,8 +108,30 @@ class GraphDB:
         }
         self._db_path.write_text(json.dumps(data, indent=2))
 
+    def begin_batch(self) -> None:
+        """Enter batch mode — defers disk writes until commit_batch()."""
+        self._ensure_loaded()
+        self._batch_mode = True
+
+    def commit_batch(self) -> None:
+        """Flush pending changes to disk and exit batch mode."""
+        self._batch_mode = False
+        if self._dirty:
+            self._save()
+            self._dirty = False
+
+    def _maybe_save(self) -> None:
+        """Save unless in batch mode."""
+        if self._batch_mode:
+            self._dirty = True
+        else:
+            self._save()
+
     def close(self) -> None:
-        """No-op for embedded DB — kept for interface compatibility."""
+        """Flush any pending batch and close."""
+        if self._dirty:
+            self._save()
+            self._dirty = False
 
     # -- node operations --------------------------------------------------
 
@@ -131,7 +155,7 @@ class GraphDB:
                 labels=labels or set(),
                 properties=properties or {},
             )
-        self._save()
+        self._maybe_save()
 
     def get_node(self, name: str) -> Node | None:
         """Get a node by name."""
@@ -170,7 +194,7 @@ class GraphDB:
                 properties=properties or {},
             )
         )
-        self._save()
+        self._maybe_save()
 
     def get_edges(
         self,
@@ -263,4 +287,4 @@ class GraphDB:
         self._nodes.clear()
         self._edges.clear()
         self._loaded = True
-        self._save()
+        self._maybe_save()

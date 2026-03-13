@@ -49,14 +49,18 @@ class Indexer:
         paths = discover_skills(directory)
         skills: list[Skill] = []
 
-        for path in paths:
-            skill = parse_skill(path)
-            if self._should_update(skill):
-                self._upsert_skill(skill)
-            skills.append(skill)
+        self.db.begin_batch()
+        try:
+            for path in paths:
+                skill = parse_skill(path)
+                if self._should_update(skill):
+                    self._upsert_skill(skill)
+                skills.append(skill)
 
-        # Build relationships after all skills are indexed
-        self._build_relationships(skills)
+            # Build relationships after all skills are indexed
+            self._build_relationships(skills)
+        finally:
+            self.db.commit_batch()
 
         return skills
 
